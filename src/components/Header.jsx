@@ -70,7 +70,7 @@ const Header = ({ isTailwind = true }) => {
                     Moves:
                     <span className="text-purple-400 font-simibold text-md ml-1">
                         {moves.current}/
-                        <b className="text-purple-600">{moves.total}</b>
+                        <b className="text-purple-400">{moves.total}</b>
                     </span>
                 </span>
 

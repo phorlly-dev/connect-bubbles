@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { emitEvent, emitEvents } from "../../hooks/remote";
+import { emitEvent, emitEvents, onEvent } from "../../hooks/remote";
 import { engine } from "../consts";
 import { makeInput, makeGridWithWave } from "../utils/objects";
 
@@ -45,7 +45,10 @@ class GameEngine extends Phaser.Scene {
     create() {
         // 🔹 Lifecycle hook
         emitEvent("current-scene-ready", this);
-        emitEvent("sound", (mute) => (this.sound.mute = mute));
+        onEvent("sound", (mute) => {
+            this.sound.mute = mute;
+            this.sound.play("close");
+        });
 
         // 🔹 Setup gameplay visuals
         // makeRandomGrid(this);

@@ -21,6 +21,13 @@ const GameEvent = {
     emitEvent(event, arg) {
         RemoteEvent.emit(event, arg);
     },
+    onEvent(event, callback) {
+        RemoteEvent.on(event, callback);
+    },
+    offEvent(event, callback) {
+        RemoteEvent.off(event, callback);
+    },
 };
 
-export const { onEvents, offEvents, emitEvents, emitEvent } = GameEvent;
+export const { onEvents, offEvents, emitEvents, emitEvent, onEvent, offEvent } =
+    GameEvent;

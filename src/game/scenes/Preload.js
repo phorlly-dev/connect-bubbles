@@ -16,7 +16,16 @@ class Preload extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("airplane", "assets/airplane.png");
+        this.load.setPath("assets/");
+        this.load.image("airplane", "images/airplane.png");
+
+        this.load.audio("close", "sounds/close.wav");
+        this.load.audio("click", "sounds/click.wav");
+        this.load.audio("cancel", "sounds/cancel.ogg");
+        this.load.audio("lose", "sounds/lose.wav");
+        this.load.audio("win", "sounds/win.ogg");
+        this.load.audio("connect", "sounds/connect.ogg");
+        this.load.audio("empty", "sounds/empty.ogg");
 
         // Generate ball textures once here
         this.ballColors.forEach((color) => {

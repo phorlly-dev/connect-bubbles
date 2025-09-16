@@ -1,6 +1,6 @@
 import * as React from "react";
 import StartGame from "../game";
-import { RemoteEvent } from "../hooks/remote";
+import { offEvent, onEvent } from "../hooks/remote";
 
 export const PhaserGame = React.forwardRef((_props, ref) => {
     const game = React.useRef();
@@ -26,9 +26,9 @@ export const PhaserGame = React.forwardRef((_props, ref) => {
         const handleSceneReady = (scene) => {
             if (ref) ref.current.scene = scene;
         };
-        RemoteEvent.on("current-scene-ready", handleSceneReady);
+        onEvent("current-scene-ready", handleSceneReady);
 
-        return () => RemoteEvent.off("current-scene-ready", handleSceneReady);
+        return () => offEvent("current-scene-ready", handleSceneReady);
     }, [ref]);
 
     return <div id="game-container"></div>;

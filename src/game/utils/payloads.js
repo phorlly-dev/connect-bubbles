@@ -39,6 +39,7 @@ const Payloads = {
             const removed = scene.selectedBalls.pop();
             highlightBall(scene, removed, false);
             updateConnectionLine(scene);
+            scene.sound.play("cancel");
             return;
         }
 
@@ -57,6 +58,8 @@ const Payloads = {
             scene.selectedBalls.push(ball);
             updateConnectionLine(scene);
             highlightBall(scene, ball, true);
+        } else if (distance >= 80) {
+            scene.sound.play("empty");
         }
     },
     updateConnectionLine(scene, endX = null, endY = null) {
@@ -110,6 +113,7 @@ const Payloads = {
         scene.safeEmit("scores", { ...scene.scores });
         scene.moves.current--;
         scene.safeEmit("moves", { ...scene.moves });
+        scene.sound.play("connect");
 
         // Animate each ball with stagger delay
         scene.selectedBalls.forEach((ball, index) => {
@@ -182,6 +186,7 @@ const Payloads = {
     checkLevelStatus(scene) {
         if (scene.scores.current >= scene.targetScore) {
             levelCompleted(scene, scene.level);
+            scene.sound.play("win");
 
             scene.time.delayedCall(1000, () => triggerAirplane(scene));
         } else if (scene.moves.current <= 0) {
@@ -191,8 +196,10 @@ const Payloads = {
                 "❌ You lose!\n\nTap to play again",
                 0xff0000
             );
+            scene.sound.play("lose");
             scene.input.once("pointerdown", () => {
                 message.destroy();
+                scene.sound.play("click");
 
                 // Destroy all balls before restart
                 destroyAllBalls(scene, () => {

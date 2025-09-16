@@ -7,8 +7,8 @@ const Footer = ({ isTailwind = true }) => {
         <footer className="w-full bg-white/90 px-4 py-3 text-center sm:px-6 sm:py-4">
             <p className="text-sm text-gray-700 leading-relaxed">
                 Draw lines to connect{" "}
-                <span className="font-semibold">3 or more</span> balls of the
-                same color!
+                <span className="font-bold text-purple-400">3 or more</span>{" "}
+                balls of the same color!
                 <br />
                 Release to clear the connected balls.{" "}
                 <span className="font-semibold text-purple-400">
