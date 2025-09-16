@@ -16,6 +16,8 @@ class Preload extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image("airplane", "assets/airplane.png");
+
         // Generate ball textures once here
         this.ballColors.forEach((color) => {
             const graphics = this.add.graphics();
@@ -36,11 +38,12 @@ class Preload extends Phaser.Scene {
             graphics.generateTexture(color, 35, 35);
             graphics.destroy();
 
-            const g = this.add.graphics();
-            g.fillStyle(getColorHex(color), 1);
-            g.fillCircle(8, 8, 8);
-            g.generateTexture(`particle_${color}`, 16, 16);
-            g.destroy();
+            //Effect
+            const grap = this.add.graphics();
+            grap.fillStyle(getColorHex(color), 1);
+            grap.fillCircle(8, 8, 8);
+            grap.generateTexture(`particle_${color}`, 16, 16);
+            grap.destroy();
         });
     }
 

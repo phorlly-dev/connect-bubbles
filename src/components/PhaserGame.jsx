@@ -1,8 +1,8 @@
 import * as React from "react";
-import StartGame from "../game/init";
+import StartGame from "../game";
 import { RemoteEvent } from "../hooks/remote";
 
-export const PhaserGame = React.forwardRef(({ currentActiveScene }, ref) => {
+export const PhaserGame = React.forwardRef((_props, ref) => {
     const game = React.useRef();
 
     // Create the game inside a useLayoutEffect hook to avoid the game being created outside the DOM
@@ -21,16 +21,15 @@ export const PhaserGame = React.forwardRef(({ currentActiveScene }, ref) => {
         };
     }, [ref]);
 
-    React.useEffect(() => {
-        RemoteEvent.on("current-scene-ready", (currentScene) => {
-            if (currentActiveScene instanceof Function) {
-                currentActiveScene(currentScene);
-            }
-            ref.current.scene = currentScene;
-        });
+    // Listen for scene ready
+    React.useLayoutEffect(() => {
+        const handleSceneReady = (scene) => {
+            if (ref) ref.current.scene = scene;
+        };
+        RemoteEvent.on("current-scene-ready", handleSceneReady);
 
-        return () => RemoteEvent.removeListener("current-scene-ready");
-    }, [currentActiveScene, ref]);
+        return () => RemoteEvent.off("current-scene-ready", handleSceneReady);
+    }, [ref]);
 
     return <div id="game-container"></div>;
 });

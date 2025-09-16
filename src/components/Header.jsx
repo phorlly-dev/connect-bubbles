@@ -1,69 +1,152 @@
 import * as React from "react";
-import { RemoteEvent } from "../hooks/remote";
+import { emitEvent, offEvents, onEvents } from "../hooks/remote";
+import { formatNumber } from "../hooks/format";
 
 const Header = ({ isTailwind = true }) => {
-    const [score, setScore] = React.useState(0);
+    const [muted, setMuted] = React.useState(false);
+    const [scores, setScores] = React.useState({ current: 0, total: 0 });
     const [moves, setMoves] = React.useState({ current: 0, total: 0 });
     const [target, setTarget] = React.useState(0);
     const [level, setLevel] = React.useState(1);
 
     // Listen for Phaser events
     React.useEffect(() => {
-        const updateScore = (data) => setScore(data);
-        const updateMoves = (data) => setMoves(data);
-        const updateTarget = (data) => setTarget(data);
-        const updateLevel = (data) => setLevel(data);
+        const events = ["scores", "moves", "target", "level"];
+        const callbacks = [
+            (data = {}) => setScores({ ...data }),
+            (data = {}) => setMoves({ ...data }),
+            (data = 0) => setTarget(data),
+            (data = 1) => setLevel(data),
+        ];
 
-        RemoteEvent.on("score:update", updateScore);
-        RemoteEvent.on("moves:update", updateMoves);
-        RemoteEvent.on("target:update", updateTarget);
-        RemoteEvent.on("level:update", updateLevel);
+        onEvents({ events, callbacks });
 
-        return () => {
-            RemoteEvent.off("score:update", updateScore);
-            RemoteEvent.off("moves:update", updateMoves);
-            RemoteEvent.off("target:update", updateTarget);
-            RemoteEvent.off("level:update", updateLevel);
-        };
+        return () => offEvents({ events, callbacks });
     }, []);
 
-    return (
-        <header className="px-6 py-3 border-b border-gray-200 bg-white/80">
+    const toggle = () => {
+        const newMute = !muted;
+        setMuted(newMute);
+        emitEvent("sound", newMute);
+    };
+
+    return isTailwind ? (
+        <header className="px-6 py-4 border-b border-gray-200 bg-white/80">
             {/* First Row */}
             <section className="flex items-center justify-between">
                 <span className="text-gray-600">
                     Score:
-                    <span className="text-green-600 font-bold text-lg ml-1">
-                        {score}
+                    <span className="text-green-600 font-simibold text-lg ml-1">
+                        {scores.current}
                     </span>
                 </span>
 
                 <span className="text-gray-600">
                     Level:
-                    <span className="text-orange-500 font-bold text-lg ml-1">
+                    <span className="text-orange-500 font-simibold text-lg ml-1">
                         {level}
                     </span>
                 </span>
 
-                <button className="btn w-9 h-9 flex items-center justify-center bg-green-500 text-white cursor-pointer rounded-full shadow hover:bg-green-600 transition">
-                    <i className="fa fa-volume-up"></i>
+                <button
+                    onClick={toggle}
+                    className={`w-10 h-10 flex cursor-pointer items-center p-4 justify-center rounded-full ${
+                        muted ? "bg-red-500" : "bg-green-600"
+                    }  text-white shadow-lg hover:scale-110 hover:shadow-xl transition`}
+                    title="Toggle sound on/off"
+                    aria-label="Toggle sound"
+                >
+                    <i
+                        className={`fa ${
+                            muted ? "fa-volume-mute" : "fa-volume-up"
+                        }`}
+                    ></i>
                 </button>
             </section>
 
             {/* Second Row */}
             <section className="flex items-center justify-between mt-3">
-                <span className="text-gray-600">
+                <span className="text-gray-500">
                     Moves:
-                    <span className="text-blue-600 font-bold text-md ml-1">
-                        {moves.current}/{moves.total}
+                    <span className="text-purple-400 font-simibold text-md ml-1">
+                        {moves.current}/
+                        <b className="text-purple-600">{moves.total}</b>
                     </span>
                 </span>
 
-                <span className="text-gray-600 ">
+                {scores.total > 0 && (
+                    <span className="text-gray-500 ">
+                        Total:
+                        <span className="text-purple-400 font-bold text-md ml-1">
+                            {formatNumber(scores.total)}
+                        </span>
+                    </span>
+                )}
+
+                <span className="text-gray-500 ">
                     Target:
-                    <span className="text-purple-600 font-bold text-md ml-1">
+                    <span className="text-blue-400 font-bold text-md ml-1">
                         {target}
                     </span>
+                </span>
+            </section>
+        </header>
+    ) : (
+        <header className="card-header px-4 py-3 border-bottom bg-white bg-opacity-75">
+            {/* First Row */}
+            <section className="d-flex align-items-center justify-content-between">
+                <span className="text-muted">
+                    Score:
+                    <span className="text-success fw-semibold fs-5 ms-1">
+                        {scores.current}
+                    </span>
+                </span>
+
+                <span className="text-muted">
+                    Level:
+                    <span className="text-warning fw-semibold fs-5 ms-1">
+                        {level}
+                    </span>
+                </span>
+
+                <button
+                    onClick={toggle}
+                    title="Toggle sound on/off"
+                    aria-label="Toggle sound"
+                    className={`btn rounded-circle shadow ${
+                        muted ? "btn-dark" : "btn-success"
+                    }`}
+                >
+                    <i
+                        className={`fa ${
+                            muted ? "fa-volume-mute" : "fa-volume-up"
+                        }`}
+                    ></i>
+                </button>
+            </section>
+
+            {/* Second Row */}
+            <section className="d-flex align-items-center justify-content-between mt-3">
+                <span className="text-muted">
+                    Moves:
+                    <span className="text-danger fw-semibold ms-1">
+                        {moves.current}/
+                        <b className="text-primary">{moves.total}</b>
+                    </span>
+                </span>
+
+                {scores.total > 0 && (
+                    <span className="text-muted">
+                        Total:
+                        <span className="text-info fw-bold ms-1">
+                            {formatNumber(scores.total)}
+                        </span>
+                    </span>
+                )}
+
+                <span className="text-muted">
+                    Target:
+                    <span className="text-primary fw-bold ms-1">{target}</span>
                 </span>
             </section>
         </header>
