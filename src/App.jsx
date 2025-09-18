@@ -15,37 +15,6 @@ const App = () => {
     const [gameData, setGameData] = React.useState(null);
     React.useEffect(() => setIsTailwind(isLoaded()), []);
 
-    // Load game data when player logs in
-    React.useEffect(() => {
-        const savedName = localStorage.getItem("playerName");
-        if (savedName) {
-            setPlayer(savedName);
-            loadData(savedName)
-                .then((saved) => {
-                    if (saved) {
-                        setGameData(saved);
-
-                        // ✅ also push into Phaser scene
-                        const game = phaserRef.current;
-                        if (game && game.scene && game.scene.keys[engine]) {
-                            game.scene.keys[engine].init({
-                                player: savedName,
-                                level: saved.level,
-                                remainingMoves: saved.move,
-                                totalScore: saved.score,
-                            });
-                        }
-                    }
-                })
-                .catch((err) => {
-                    console.error(err);
-                    setLoading(false);
-                });
-        }
-
-        setLoading(false);
-    }, []); // run once on mount
-
     // Load from Firebase when player logs in
     const handleAuth = async (name) => {
         setPlayer(name);
@@ -62,6 +31,33 @@ const App = () => {
             setGameData(defaults);
         }
     };
+
+    // Load game data when player logs in
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const savedName = localStorage.getItem("playerName");
+            if (savedName) {
+                setPlayer(savedName);
+                const saved = await loadData(savedName);
+                if (saved) {
+                    setGameData(saved);
+
+                    // ✅ also push into Phaser scene
+                    const game = phaserRef.current;
+                    if (game && game.scene && game.scene.keys[engine]) {
+                        game.scene.keys[engine].init({
+                            player: savedName,
+                            level: saved.level,
+                            remainingMoves: saved.move,
+                            totalScore: saved.score,
+                        });
+                    }
+                }
+            }
+        };
+
+        fetchData();
+    }, [player]); // run once on mount
 
     const handleLogout = () => {
         localStorage.removeItem("playerName");
