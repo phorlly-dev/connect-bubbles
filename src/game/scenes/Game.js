@@ -64,7 +64,7 @@ class GameEngine extends Phaser.Scene {
 
     resetGame(data = {}) {
         // Player
-        this.playerName = data.player || this.playerName || "guest";
+        this.playerName = data.player || this.playerName;
 
         // Core state
         this.level = data.level || 1;
