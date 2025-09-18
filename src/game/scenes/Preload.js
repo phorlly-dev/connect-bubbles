@@ -1,6 +1,8 @@
 import * as Phaser from "phaser";
 import { engine, preload } from "../consts";
 import { getColorHex } from "../utils/states";
+import { emitEvent } from "../../hooks/remote";
+import { loadData } from "../../hooks/storage";
 
 class Preload extends Phaser.Scene {
     constructor() {
@@ -57,7 +59,19 @@ class Preload extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start(engine);
+        emitEvent("current-scene-ready", this);
+        // this.scene.start(engine, { player: this.player });
+        this.time.delayedCall(600, async () => {
+            if (this.player) {
+                const value = await loadData(this.player);
+                this.scene.start(engine, {
+                    player: this.player,
+                    totalScore: value?.score || 0,
+                    remainingMoves: value?.move || 0,
+                    level: value?.level || 1,
+                });
+            }
+        });
     }
 }
 

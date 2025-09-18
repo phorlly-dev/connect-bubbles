@@ -1,3 +1,4 @@
+import { updateProgress } from "../../hooks/storage";
 import { makeParticle } from "./objects";
 import { getColorHex, showMessage } from "./states";
 
@@ -20,14 +21,23 @@ const Effects = {
                 airplane.destroy();
 
                 // After all balls destroyed → go to next level
-                scene.time.delayedCall(600, () => {
+                scene.time.delayedCall(600, async () => {
                     scene.level++;
-                    scene.remainingMoves = scene.moves.current;
                     scene.scores.total += scene.scores.current;
+
+                    //Save data to DB
+                    if (scene.playerName) {
+                        await updateProgress(scene.playerName, {
+                            score: scene.scores.total,
+                            move: scene.moves.current,
+                            level: scene.level,
+                        });
+                    }
+
                     scene.scene.restart({
                         gameOver: false,
                         level: scene.level,
-                        remainingMoves: scene.remainingMoves, // ✅ pass leftover
+                        remainingMoves: scene.moves.current,
                         totalScore: scene.scores.total,
                     });
                 });

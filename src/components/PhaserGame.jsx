@@ -1,25 +1,9 @@
 import * as React from "react";
 import StartGame from "../game";
 import { offEvent, onEvent } from "../hooks/remote";
-import { engine } from "../game/consts";
 
-const PhaserGame = React.forwardRef(({ player, data }, ref) => {
+const PhaserGame = React.forwardRef(({ player }, ref) => {
     const game = React.useRef();
-
-    React.useEffect(() => {
-        if (data && game.current) {
-            const scene = game.current.scene.keys[engine];
-            if (scene) {
-                scene.init({
-                    player,
-                    level: data.level,
-                    remainingMoves: data.move,
-                    totalScore: data.score,
-                });
-                console.log("✅ Synced game with DB data:", data);
-            }
-        }
-    }, [data, player]);
 
     React.useLayoutEffect(() => {
         if (!game.current) {
@@ -42,11 +26,12 @@ const PhaserGame = React.forwardRef(({ player, data }, ref) => {
     React.useEffect(() => {
         const handleSceneReady = (scene) => {
             if (ref) ref.current.scene = scene;
+            scene.player = player;
         };
 
         onEvent("current-scene-ready", handleSceneReady);
         return () => offEvent("current-scene-ready", handleSceneReady);
-    }, [ref]);
+    }, [ref, player]);
 
     return <div id="game-container"></div>;
 });

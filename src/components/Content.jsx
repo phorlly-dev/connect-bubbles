@@ -5,7 +5,7 @@ const PhaserGame = React.lazy(() => import("./PhaserGame"));
 const Header = React.lazy(() => import("./Header"));
 const Footer = React.lazy(() => import("./Footer"));
 
-const Content = ({ player, isTailwind, onLogout, gameData }) => {
+const Content = ({ player, isTailwind, onLogout }) => {
     const phaserRef = React.useRef();
 
     return (
@@ -35,11 +35,7 @@ const Content = ({ player, isTailwind, onLogout, gameData }) => {
                         {/* GAME BOARD */}
                         <main className="flex items-center justify-center bg-gray-900 p-2 sm:p-3">
                             <section className="w-full flex justify-center">
-                                <PhaserGame
-                                    ref={phaserRef}
-                                    player={player}
-                                    data={gameData}
-                                />
+                                <PhaserGame ref={phaserRef} player={player} />
                             </section>
                         </main>
 
@@ -76,11 +72,7 @@ const Content = ({ player, isTailwind, onLogout, gameData }) => {
                         {/* GAME BOARD */}
                         <main className="card-body d-flex align-items-center justify-content-center bg-dark p-1 p-sm-2">
                             <section className="w-100 d-flex justify-content-center">
-                                <PhaserGame
-                                    ref={phaserRef}
-                                    player={player}
-                                    data={gameData}
-                                />
+                                <PhaserGame ref={phaserRef} player={player} />
                             </section>
                         </main>
 

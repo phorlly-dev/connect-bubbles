@@ -2,7 +2,6 @@ import * as Phaser from "phaser";
 import { emitEvent, emitEvents, onEvent } from "../../hooks/remote";
 import { engine } from "../consts";
 import { makeInput, makeGridWithWave } from "../utils/objects";
-import { updateProgress } from "../../hooks/storage";
 
 class GameEngine extends Phaser.Scene {
     constructor() {
@@ -26,10 +25,9 @@ class GameEngine extends Phaser.Scene {
         this.cols = 8;
         this.level = 1;
         this.targetScore = 0;
-        this.remainingMoves = 0;
         this.scores = { current: 0, total: 0 };
         this.moves = { current: 0, total: 0 };
-        this.playerName = "";
+        this.playerName = null;
 
         // 🆕 Track last emitted values
         this._lastSent = {
@@ -64,27 +62,17 @@ class GameEngine extends Phaser.Scene {
 
     resetGame(data = {}) {
         // Player
-        this.playerName = data.player || this.playerName;
+        this.playerName = data.player;
 
         // Core state
         this.level = data.level || 1;
         this.gameOver = data.gameOver || false;
 
-        // Moves
-        const targetChecking = this.level - 1 <= 3 ? 90 : 60;
-        const baseTarget =
-            (this.level - 1) * targetChecking +
-            Phaser.Math.Between(180, 360) +
-            120;
-
-        const moveChecking = baseTarget >= 400 ? 12 : 7;
-        const baseMoves =
-            Phaser.Math.Between(12, 24) +
-            moveChecking +
-            Math.floor(this.level / 4);
-
-        this.moves.total = baseMoves + (data.remainingMoves || 0);
-        this.moves.current = this.moves.total;
+        //Moves
+        this.moves = {
+            current: (data.remainingMoves || 0) + this.genBaseMoves(),
+            total: (data.remainingMoves || 0) + this.genBaseMoves(),
+        };
 
         // Scores
         this.scores = {
@@ -92,18 +80,37 @@ class GameEngine extends Phaser.Scene {
             total: data.totalScore || 0,
         };
 
-        this.targetScore = baseTarget;
-
-        //Save data to DB
-        if (this.playerName)
-            updateProgress(this.playerName, {
-                score: data.totalScore,
-                move: data.remainingMoves,
-                level: data.level,
-            });
+        //Target max score
+        this.targetScore = this.genBaseTarget();
 
         //Auto sync UI
         this.syncUI();
+        // console.log({
+        //     player: this.playerName,
+        //     score: data.totalScore,
+        //     move: data.remainingMoves,
+        //     level: data.level,
+        // });
+    }
+
+    genBaseTarget() {
+        const targetChecking = this.level - 1 <= 3 ? 90 : 60;
+        const baseTarget =
+            (this.level - 1) * targetChecking +
+            Phaser.Math.Between(180, 360) +
+            120;
+
+        return baseTarget;
+    }
+
+    genBaseMoves() {
+        const moveChecking = this.genBaseTarget() >= 400 ? 12 : 7;
+        const baseMoves =
+            Phaser.Math.Between(12, 24) +
+            moveChecking +
+            Math.floor(this.level / 4);
+
+        return baseMoves;
     }
 
     syncUI() {
