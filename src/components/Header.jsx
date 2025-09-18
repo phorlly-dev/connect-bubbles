@@ -9,7 +9,7 @@ const Header = ({ isTailwind = true }) => {
     const [target, setTarget] = React.useState(0);
     const [level, setLevel] = React.useState(1);
 
-    // Listen for Phaser events
+    // Listen for Phaser events and update state
     React.useEffect(() => {
         const events = ["scores", "moves", "target", "level"];
         const callbacks = [
@@ -20,9 +20,8 @@ const Header = ({ isTailwind = true }) => {
         ];
 
         onEvents({ events, callbacks });
-
         return () => offEvents({ events, callbacks });
-    }, []);
+    }, [scores, moves, target, level]);
 
     const toggle = () => {
         const newMute = !muted;
@@ -63,7 +62,6 @@ const Header = ({ isTailwind = true }) => {
                     ></i>
                 </button>
             </section>
-
             {/* Second Row */}
             <section className="flex items-center justify-between mt-3">
                 <span className="text-gray-500">

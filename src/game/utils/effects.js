@@ -25,9 +25,9 @@ const Effects = {
                     scene.remainingMoves = scene.moves.current;
                     scene.scores.total += scene.scores.current;
                     scene.scene.restart({
+                        gameOver: false,
                         level: scene.level,
                         remainingMoves: scene.remainingMoves, // ✅ pass leftover
-                        gameOver: false,
                         totalScore: scene.scores.total,
                     });
                 });

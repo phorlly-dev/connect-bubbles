@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #3f445eff 0%, #3a2e46ff 100%);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, Arial, sans-serif;
     font-weight: 600;
     display: flex;
@@ -14,8 +14,6 @@ canvas {
     border: 3px solid #fff;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    max-width: 100%;
-    height: auto !important;
 }
 
 .btn:hover {

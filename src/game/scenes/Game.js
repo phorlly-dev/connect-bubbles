@@ -2,6 +2,7 @@ import * as Phaser from "phaser";
 import { emitEvent, emitEvents, onEvent } from "../../hooks/remote";
 import { engine } from "../consts";
 import { makeInput, makeGridWithWave } from "../utils/objects";
+import { updateProgress } from "../../hooks/storage";
 
 class GameEngine extends Phaser.Scene {
     constructor() {
@@ -28,6 +29,7 @@ class GameEngine extends Phaser.Scene {
         this.remainingMoves = 0;
         this.scores = { current: 0, total: 0 };
         this.moves = { current: 0, total: 0 };
+        this.playerName = "";
 
         // 🆕 Track last emitted values
         this._lastSent = {
@@ -61,44 +63,46 @@ class GameEngine extends Phaser.Scene {
     }
 
     resetGame(data = {}) {
-        // ✅ Reset core state
+        // Player
+        this.playerName = data.player || this.playerName || "guest";
+
+        // Core state
         this.level = data.level || 1;
         this.gameOver = data.gameOver || false;
 
+        // Moves
         const targetChecking = this.level - 1 <= 3 ? 90 : 60;
         const baseTarget =
             (this.level - 1) * targetChecking +
             Phaser.Math.Between(180, 360) +
             120;
 
-        // ✅ Base moves for level
         const moveChecking = baseTarget >= 400 ? 12 : 7;
         const baseMoves =
             Phaser.Math.Between(12, 24) +
             moveChecking +
             Math.floor(this.level / 4);
 
-        // ✅ Carry over leftover moves from previous level
         this.moves.total = baseMoves + (data.remainingMoves || 0);
         this.moves.current = this.moves.total;
-        this.targetScore = baseTarget;
 
-        // ✅ Reset scores
+        // Scores
         this.scores = {
             current: 0,
-            total: data.totalScore || 0, // keep accumulated total if passed
+            total: data.totalScore || 0,
         };
 
-        // ✅ Reset game objects
-        this.selectedBalls = [];
-        this.currentColor = null;
-        this.balls = [];
-        this.grid = [];
+        this.targetScore = baseTarget;
 
-        // ✅ Reset graphics
-        if (this.lineGraphics) this.lineGraphics.clear();
+        //Save data to DB
+        if (this.playerName)
+            updateProgress(this.playerName, {
+                score: data.totalScore,
+                move: data.remainingMoves,
+                level: data.level,
+            });
 
-        // ✅ Emit UI events
+        //Auto sync UI
         this.syncUI();
     }
 
