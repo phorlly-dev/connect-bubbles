@@ -2,10 +2,12 @@ import * as React from "react";
 import Auth from "./components/Auth";
 import { isLoaded } from "./hooks/load";
 import { createPlayer, loadData } from "./hooks/storage";
+import { engine } from "./game/consts";
 
 const Content = React.lazy(() => import("./components/Content"));
 const Banner = React.lazy(() => import("./components/Banner"));
 const App = () => {
+    const phaserRef = React.useRef();
     const [isTailwind, setIsTailwind] = React.useState(false);
     const [showBanner, setShowBanner] = React.useState(true);
     const [loading, setLoading] = React.useState(true);
@@ -31,19 +33,31 @@ const App = () => {
     };
 
     // Load game data when player logs in
-
     React.useEffect(() => {
         const fetchData = async () => {
             const savedName = localStorage.getItem("playerName");
             if (savedName) {
                 setPlayer(savedName);
                 const saved = await loadData(savedName);
-                if (saved) setGameData(saved);
+                if (saved) {
+                    setGameData(saved);
+
+                    // ✅ also push into Phaser scene
+                    const game = phaserRef.current;
+                    if (game && game.scene && game.scene.keys[engine]) {
+                        game.scene.keys[engine].init({
+                            player: savedName,
+                            level: saved.level,
+                            remainingMoves: saved.move,
+                            totalScore: saved.score,
+                        });
+                    }
+                }
             }
-            setLoading(false);
         };
+
         fetchData();
-    }, []);
+    }, []); // run once on mount
 
     const handleLogout = () => {
         localStorage.removeItem("playerName");
