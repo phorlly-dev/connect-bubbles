@@ -20,7 +20,7 @@ const Auth = ({ onAuth, isTailwind }) => {
                     <div className="bg-gray-800/90 p-8 rounded-2xl shadow-2xl text-center w-full max-w-sm">
                         {/* Title */}
                         <h2 className="text-cyan-400 font-extrabold text-2xl sm:text-3xl mb-2">
-                            My Bubble Game
+                            The Bubble Game
                         </h2>
                         <p className="text-gray-300 text-sm mb-6">
                             Enter your name to start playing!
@@ -70,7 +70,7 @@ const Auth = ({ onAuth, isTailwind }) => {
                     >
                         {/* Title */}
                         <h2 className="fw-bold text-info mb-2">
-                            My Bubble Game
+                            The Bubble Game
                         </h2>
                         <p className="text-light mb-4">
                             Enter your name to start playing!

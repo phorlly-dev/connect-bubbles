@@ -44,36 +44,34 @@ const Content = ({ player, isTailwind, onLogout }) => {
                     </section>
                 </div>
             ) : (
-                <div className="d-flex flex-column align-items-center justify-content-center px-2">
-                    <section className="d-flex flex-row align-items-center justify-content-center text-light mb-3">
-                        <h5>
+                <div className="w-100 d-flex flex-column align-items-center justify-content-center px-2">
+                    <section className="d-flex flex-row align-items-center justify-content-center text-light mb-2">
+                        <h5 className="mb-0 h6">
                             Welcome{" "}
-                            <b className="text-info text-capitalize">
+                            <b className="text-info fs-5 text-capitalize">
                                 {player}
                             </b>
                             , enjoy the game.
                         </h5>
                         <button
                             onClick={onLogout}
-                            title="Logout game"
-                            aria-label="Logout game"
+                            title="Exit from game"
+                            aria-label="Exit"
                             className="btn btn-danger btn-sm rounded-circle shadow ms-4"
                         >
                             <i className="fa fa-power-off"></i>
                         </button>
                     </section>
                     <section
-                        className="card bg-white bg-opacity-90 rounded-4 shadow-lg w-100 p-1 m-auto"
-                        style={{ maxWidth: "460px", width: "100%" }}
+                        className="card bg-white bg-opacity-90 rounded-4 shadow-lg p-1 mx-2"
+                        style={{ maxWidth: "360px", width: "100%" }}
                     >
                         {/* HEADER */}
                         <Header isTailwind={false} />
 
                         {/* GAME BOARD */}
-                        <main className="card-body d-flex align-items-center justify-content-center bg-dark p-1 p-sm-2">
-                            <section className="w-100 d-flex justify-content-center">
-                                <PhaserGame ref={phaserRef} player={player} />
-                            </section>
+                        <main className="d-flex align-items-center justify-content-center bg-dark p-1 p-sm-1">
+                            <PhaserGame ref={phaserRef} player={player} />
                         </main>
 
                         {/* FOOTER */}

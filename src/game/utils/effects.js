@@ -1,4 +1,3 @@
-import { updateProgress } from "../../hooks/storage";
 import { makeParticle } from "./objects";
 import { getColorHex, showMessage } from "./states";
 
@@ -25,21 +24,27 @@ const Effects = {
                     scene.level++;
                     scene.scores.total += scene.scores.current;
 
-                    //Save data to DB
-                    if (scene.playerName) {
-                        await updateProgress(scene.playerName, {
-                            score: scene.scores.total,
-                            move: scene.moves.current,
-                            level: scene.level,
-                        });
-                    }
-
                     scene.scene.restart({
                         gameOver: false,
                         level: scene.level,
                         remainingMoves: scene.moves.current,
                         totalScore: scene.scores.total,
                     });
+
+                    //Save data to DB
+                    // if (scene.playerName) {
+                    //     await updateProgress(scene.playerName, {
+                    //         score: scene.scores.total,
+                    //         move: scene.moves.current,
+                    //         level: scene.level,
+                    //     });
+                    //     scene.scene.restart({
+                    //         gameOver: false,
+                    //         level: scene.level,
+                    //         remainingMoves: scene.moves.current,
+                    //         totalScore: scene.scores.total,
+                    //     });
+                    // }
                 });
             },
         });
@@ -91,7 +96,7 @@ const Effects = {
             scale: 1.2,
             duration: 800,
             yoyo: true,
-            repeat: 3,
+            repeat: 2,
             ease: "Sine.easeInOut",
             onComplete: () => message.destroy(),
         });

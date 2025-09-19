@@ -90,7 +90,7 @@ const Header = ({ isTailwind = true }) => {
             </section>
         </header>
     ) : (
-        <header className="card-header px-4 py-3 border-bottom bg-white bg-opacity-75">
+        <header className="px-4 py-2 border-bottom bg-white bg-opacity-75">
             {/* First Row */}
             <section className="d-flex align-items-center justify-content-between">
                 <span className="text-muted">
@@ -111,7 +111,7 @@ const Header = ({ isTailwind = true }) => {
                     onClick={toggle}
                     title="Toggle sound on/off"
                     aria-label="Toggle sound"
-                    className={`btn rounded-circle shadow ${
+                    className={`btn btn-sm rounded-circle shadow ${
                         muted ? "btn-dark" : "btn-success"
                     }`}
                 >

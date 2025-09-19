@@ -17,8 +17,8 @@ const Footer = ({ isTailwind = true }) => {
             </p>
         </footer>
     ) : (
-        <footer className="card-footer w-100 bg-white bg-opacity-90 text-center">
-            <p className="small text-muted lh-lg">
+        <footer className="w-100 bg-white bg-opacity-90 text-center">
+            <p className="small text-muted m-1">
                 Draw lines to connect{" "}
                 <span className="fw-semibold text-primary">3 or more</span>{" "}
                 balls of the same color!

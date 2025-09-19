@@ -188,7 +188,7 @@ const Payloads = {
             levelCompleted(scene, scene.level);
             scene.sound.play("win");
 
-            scene.time.delayedCall(1000, () => triggerAirplane(scene));
+            scene.time.delayedCall(600, () => triggerAirplane(scene));
         } else if (scene.moves.current <= 0) {
             // ❌ Out of moves & didn’t reach target
             const message = showMessage(

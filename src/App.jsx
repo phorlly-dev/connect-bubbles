@@ -1,7 +1,6 @@
 import * as React from "react";
 import Auth from "./components/Auth";
 import { isLoaded } from "./hooks/load";
-import { createPlayer, loadData } from "./hooks/storage";
 
 const Content = React.lazy(() => import("./components/Content"));
 const Banner = React.lazy(() => import("./components/Banner"));
@@ -16,14 +15,14 @@ const App = () => {
     const handleAuth = async (name) => {
         setPlayer(name);
         localStorage.setItem("playerName", name);
-
         // Load from Firebase
-        const saved = await loadData(name);
-        if (!saved) {
-            // new player → create with defaults
-            const defaults = { level: 1, move: 0, score: 0 };
-            await createPlayer(name, defaults);
-        }
+        // const saved = await loadData(name);
+        // if (!saved) {
+        //     // new player → create with defaults
+        //     const defaults = { level: 1, move: 0, score: 0 };
+        //     await createPlayer(name, defaults);
+        // }
+        setLoading(false);
     };
 
     // Load game data when player logs in
@@ -40,28 +39,24 @@ const App = () => {
         setPlayer(null);
     };
 
-    if (!player) {
-        return <Auth onAuth={handleAuth} isTailwind={isTailwind} />;
-    }
-
-    if (showBanner) {
+    if (!player) return <Auth onAuth={handleAuth} isTailwind={isTailwind} />;
+    else if (showBanner)
         return (
             <Banner
                 onClose={() => setShowBanner(false)}
                 isTailwind={isTailwind}
             />
         );
-    }
-
-    return (
-        <React.Suspense fallback={loading && <div> Loading... </div>}>
-            <Content
-                player={player}
-                onLogout={handleLogout}
-                isTailwind={isTailwind}
-            />
-        </React.Suspense>
-    );
+    else
+        return (
+            <React.Suspense fallback={loading && <div> Loading... </div>}>
+                <Content
+                    player={player}
+                    onLogout={handleLogout}
+                    isTailwind={isTailwind}
+                />
+            </React.Suspense>
+        );
 };
 
 export default App;
