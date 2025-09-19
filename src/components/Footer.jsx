@@ -4,7 +4,7 @@ const Footer = ({ isTailwind = true }) => {
     React.useEffect(() => {}, []);
 
     return isTailwind ? (
-        <footer className="w-full bg-white/90 px-4 py-3 text-center sm:px-6 sm:py-4">
+        <footer className="w-full bg-white/90 p-2 text-center sm:p-2">
             <p className="text-sm text-gray-700 leading-relaxed">
                 Draw lines to connect{" "}
                 <span className="font-bold text-purple-400">3 or more</span>{" "}
