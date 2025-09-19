@@ -44,7 +44,7 @@ const Content = ({ player, isTailwind, onLogout }) => {
                     </section>
                 </div>
             ) : (
-                <div className="w-100 d-flex flex-column align-items-center justify-content-center px-2">
+                <div className="w-100 d-flex flex-column align-items-center justify-content-center px-4">
                     <section className="d-flex flex-row align-items-center justify-content-center text-light mb-2">
                         <h5 className="mb-0 h6">
                             Welcome{" "}
@@ -63,8 +63,8 @@ const Content = ({ player, isTailwind, onLogout }) => {
                         </button>
                     </section>
                     <section
-                        className="card bg-white bg-opacity-90 rounded-4 shadow-lg p-1 mx-2"
-                        style={{ maxWidth: "360px", width: "100%" }}
+                        className="bg-white bg-opacity-90 w-auto rounded-4 shadow-lg p-1 mx-2"
+                        style={{ maxWidth: "380px", width: "100%" }}
                     >
                         {/* HEADER */}
                         <Header isTailwind={false} />
