@@ -9,54 +9,63 @@ const App = () => {
     const [showBanner, setShowBanner] = React.useState(true);
     const [loading, setLoading] = React.useState(true);
     const [player, setPlayer] = React.useState(null);
-    React.useEffect(() => setIsTailwind(isLoaded()), []);
-
-    // Load from Firebase when player logs in
-    const handleAuth = async (name) => {
-        setPlayer(name);
-        localStorage.setItem("playerName", name);
-        // Load from Firebase
-        // const saved = await loadData(name);
-        // if (!saved) {
-        //     // new player → create with defaults
-        //     const defaults = { level: 1, move: 0, score: 0 };
-        //     await createPlayer(name, defaults);
-        // }
-        setLoading(false);
-    };
 
     // Load game data when player logs in
     React.useEffect(() => {
+        setIsTailwind(isLoaded());
         const savedName = localStorage.getItem("playerName");
         if (savedName) {
             setPlayer(savedName);
         }
-        setLoading(false);
-    }, []);
+        setLoading(true);
+        setShowBanner(true);
+    }, [isTailwind]);
 
-    const handleLogout = () => {
-        localStorage.removeItem("playerName");
-        setPlayer(null);
-    };
-
-    if (!player) return <Auth onAuth={handleAuth} isTailwind={isTailwind} />;
-    else if (showBanner)
+    if (!player) {
         return (
-            <Banner
-                onClose={() => setShowBanner(false)}
+            <Auth
                 isTailwind={isTailwind}
+                onAuth={(name) => {
+                    setPlayer(name);
+                    localStorage.setItem("playerName", name);
+                    // Load from Firebase
+                    // const saved = await loadData(name);
+                    // if (!saved) {
+                    //     // new player → create with defaults
+                    //     const defaults = { level: 1, move: 0, score: 0 };
+                    //     await createPlayer(name, defaults);
+                    // }
+                    setLoading(true);
+                    setShowBanner(true);
+                }}
             />
         );
-    else
+    } else if (showBanner) {
+        return (
+            <Banner
+                isTailwind={isTailwind}
+                onClose={() => {
+                    setShowBanner(false);
+                    setLoading(false);
+                }}
+            />
+        );
+    } else {
         return (
             <React.Suspense fallback={loading && <div> Loading... </div>}>
                 <Content
                     player={player}
-                    onLogout={handleLogout}
                     isTailwind={isTailwind}
+                    onLogout={() => {
+                        localStorage.removeItem("playerName");
+                        setPlayer(null);
+                        setShowBanner(true);
+                        setLoading(true);
+                    }}
                 />
             </React.Suspense>
         );
+    }
 };
 
 export default App;

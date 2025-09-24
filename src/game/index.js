@@ -17,8 +17,6 @@ const config = {
     scene: [Preload, GameEngine],
 };
 
-const StartGame = (parent) => {
-    return new Phaser.Game({ ...config, parent });
-};
+const StartGame = (parent) => new Phaser.Game({ ...config, parent });
 
 export default StartGame;

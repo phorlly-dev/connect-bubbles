@@ -10,12 +10,12 @@ const Objects = {
     makeInput(scene) {
         // Mouse/touch down - start drawing
         scene.input.on("pointerdown", (_pointer, currentlyOver) => {
+            // Change cursor when drawing starts
+            scene.input.setDefaultCursor("crosshair");
+
             if (scene.gameOver || currentlyOver.length === 0) return;
 
             startConnection(scene, currentlyOver[0]);
-
-            // Change cursor when drawing starts
-            scene.input.setDefaultCursor("crosshair");
         });
 
         // Mouse/touch move - continue drawing
@@ -31,10 +31,10 @@ const Objects = {
 
         // Mouse/touch up - finish drawing
         scene.input.on("pointerup", () => {
-            if (scene.isDrawing) finishConnection(scene);
-
             // Reset cursor back to normal
             scene.input.setDefaultCursor("default");
+
+            if (scene.isDrawing) finishConnection(scene);
         });
     },
     makeRandomGrid(scene) {

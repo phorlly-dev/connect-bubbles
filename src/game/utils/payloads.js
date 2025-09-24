@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {
     levelCompleted,
     showBurst,
@@ -185,11 +186,13 @@ const Payloads = {
     },
     checkLevelStatus(scene) {
         if (scene.scores.current >= scene.targetScore) {
+            scene.gameOver = true;
             levelCompleted(scene, scene.level);
             scene.sound.play("win");
 
             scene.time.delayedCall(600, () => triggerAirplane(scene));
         } else if (scene.moves.current <= 0) {
+            scene.gameOver = true;
             // ❌ Out of moves & didn’t reach target
             const message = showMessage(
                 scene,
@@ -209,8 +212,6 @@ const Payloads = {
                     });
                 });
             });
-
-            scene.gameOver = true;
         }
     },
 };

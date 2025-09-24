@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const Footer = ({ isTailwind = true }) => {
+const Footer = ({ isTailwind }) => {
     React.useEffect(() => {}, []);
 
     return isTailwind ? (

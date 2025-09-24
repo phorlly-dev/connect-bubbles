@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import { makeParticle } from "./objects";
 import { getColorHex, showMessage } from "./states";
 

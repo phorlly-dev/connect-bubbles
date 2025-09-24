@@ -2,7 +2,7 @@ import * as React from "react";
 import { emitEvent, offEvents, onEvents } from "../hooks/remote";
 import { formatNumber } from "../hooks/format";
 
-const Header = ({ isTailwind = true }) => {
+const Header = ({ isTailwind }) => {
     const [muted, setMuted] = React.useState(false);
     const [scores, setScores] = React.useState({ current: 0, total: 0 });
     const [moves, setMoves] = React.useState({ current: 0, total: 0 });
@@ -23,12 +23,6 @@ const Header = ({ isTailwind = true }) => {
         return () => offEvents({ events, callbacks });
     }, [scores, moves, target, level]);
 
-    const toggle = () => {
-        const newMute = !muted;
-        setMuted(newMute);
-        emitEvent("sound", newMute);
-    };
-
     return isTailwind ? (
         <header className="px-6 py-4 border-b border-gray-200 bg-white/80">
             {/* First Row */}
@@ -48,8 +42,12 @@ const Header = ({ isTailwind = true }) => {
                 </span>
 
                 <button
-                    onClick={toggle}
-                    className={`w-10 h-10 flex cursor-pointer items-center p-4 justify-center rounded-full ${
+                    onClick={() => {
+                        const newMute = !muted;
+                        setMuted(newMute);
+                        emitEvent("sound", newMute);
+                    }}
+                    className={`w-8 h-8 flex cursor-pointer items-center p-4 justify-center rounded-full ${
                         muted ? "bg-red-500" : "bg-green-600"
                     }  text-white shadow-lg hover:scale-110 hover:shadow-xl transition`}
                     title="Toggle sound on/off"
@@ -81,7 +79,7 @@ const Header = ({ isTailwind = true }) => {
                     </span>
                 )}
 
-                <span className="text-gray-500 ">
+                <span className="text-gray-500">
                     Target:
                     <span className="text-blue-400 font-bold text-md ml-1">
                         {target}
@@ -108,7 +106,11 @@ const Header = ({ isTailwind = true }) => {
                 </span>
 
                 <button
-                    onClick={toggle}
+                    onClick={() => {
+                        const newMute = !muted;
+                        setMuted(newMute);
+                        emitEvent("sound", newMute);
+                    }}
                     title="Toggle sound on/off"
                     aria-label="Toggle sound"
                     className={`btn btn-sm rounded-circle shadow ${

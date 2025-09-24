@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import { makeCluster } from "./objects";
 
 const States = {

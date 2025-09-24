@@ -2,7 +2,7 @@ import * as React from "react";
 import StartGame from "../game";
 import { offEvent, onEvent } from "../hooks/remote";
 
-const PhaserGame = React.forwardRef(({ player }, ref) => {
+const PhaserGame = React.forwardRef(({ player, props }, ref) => {
     const game = React.useRef();
 
     React.useLayoutEffect(() => {
@@ -25,15 +25,17 @@ const PhaserGame = React.forwardRef(({ player }, ref) => {
     // listen for scene ready event
     React.useEffect(() => {
         const handleSceneReady = (scene) => {
-            if (ref) ref.current.scene = scene;
-            scene.player = player;
+            if (ref) {
+                ref.current.scene = scene;
+                scene.player = player;
+            }
         };
 
         onEvent("current-scene-ready", handleSceneReady);
         return () => offEvent("current-scene-ready", handleSceneReady);
     }, [ref, player]);
 
-    return <div id="game-container"></div>;
+    return <div id="game-container" {...props}></div>;
 });
 
 export default PhaserGame;

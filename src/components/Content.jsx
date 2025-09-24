@@ -7,6 +7,7 @@ const Footer = React.lazy(() => import("./Footer"));
 
 const Content = ({ player, isTailwind, onLogout }) => {
     const phaserRef = React.useRef();
+    const maxWidth = "400px";
 
     return (
         <div className="flex">
@@ -22,7 +23,7 @@ const Content = ({ player, isTailwind, onLogout }) => {
                             onClick={onLogout}
                             title="Logout game"
                             aria-label="Logout game"
-                            className="btn text-white ml-4 cursor-pointer bg-red-400 px-2 py-1 rounded-full"
+                            className="btn text-white h-8 w-8 ml-4 cursor-pointer bg-red-400 px-2 py-1 rounded-full"
                         >
                             <i className="fa fa-power-off"></i>
                         </button>
@@ -30,7 +31,7 @@ const Content = ({ player, isTailwind, onLogout }) => {
                     {/* Card Frame */}
                     <section
                         className="bg-white/90 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden items-center"
-                        style={{ maxWidth: "380px", width: "100%" }}
+                        style={{ maxWidth, width: "100%" }}
                     >
                         {/* HEADER */}
                         <Header isTailwind={true} />
@@ -65,7 +66,7 @@ const Content = ({ player, isTailwind, onLogout }) => {
                     </section>
                     <section
                         className="bg-white bg-opacity-90 w-auto rounded-4 shadow-lg p-1 mx-2"
-                        style={{ maxWidth: "380px", width: "100%" }}
+                        style={{ maxWidth, width: "100%" }}
                     >
                         {/* HEADER */}
                         <Header isTailwind={false} />

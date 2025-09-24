@@ -3,11 +3,6 @@ import * as React from "react";
 const Banner = ({ onClose, isTailwind }) => {
     const [visible, setVisible] = React.useState(true);
 
-    const handleClose = () => {
-        setVisible(false);
-        onClose(); // notify parent that game can start
-    };
-
     if (!visible) return null;
 
     return (
@@ -18,7 +13,10 @@ const Banner = ({ onClose, isTailwind }) => {
                         {/* Close Button */}
                         <section className="flex justify-end items-center">
                             <button
-                                onClick={handleClose}
+                                onClick={() => {
+                                    setVisible(false);
+                                    onClose();
+                                }}
                                 className="btn cursor-pointer bg-red-500 absolute rounded-full w-8 h-8 top-2 right-2 text-white/80 hover:text-white"
                             >
                                 <i className="fa fa-close"></i>
@@ -52,7 +50,10 @@ const Banner = ({ onClose, isTailwind }) => {
                             type="button"
                             className="btn btn-danger position-absolute top-0 end-0 m-2 border rounded-circle"
                             aria-label="Close"
-                            onClick={handleClose}
+                            onClick={() => {
+                                setVisible(false);
+                                onClose();
+                            }}
                         >
                             <i className="fa fa-close"></i>
                         </button>
