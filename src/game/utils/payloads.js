@@ -20,13 +20,15 @@ import {
 
 const Payloads = {
     startConnection(scene, ball) {
+        if (scene.gameOver) return;
+
         scene.isDrawing = true;
         scene.currentColor = ball.getData("color");
         scene.selectedBalls = [ball];
         highlightBall(scene, ball, true);
     },
     tryConntion(scene, ball) {
-        if (!ball) return;
+        if (!ball || scene.gameOver) return;
 
         const ballColor = ball.getData("color");
         if (ballColor !== scene.currentColor) return;
@@ -146,8 +148,8 @@ const Payloads = {
         const totalDelay = scene.selectedBalls.length * 60;
         scene.time.delayedCall(totalDelay, () => {
             applyGravity(scene);
-            refillEmptySpaces(scene);
             checkLevelStatus(scene);
+            refillEmptySpaces(scene);
         });
     },
     refillEmptySpaces(scene) {
@@ -185,7 +187,7 @@ const Payloads = {
         scene.time.delayedCall(600, () => playability(scene));
     },
     checkLevelStatus(scene) {
-        if (scene.scores.current >= scene.targetScore) {
+        if (scene.scores.current >= scene.target) {
             scene.gameOver = true;
             levelCompleted(scene, scene.level);
             scene.sound.play("win");

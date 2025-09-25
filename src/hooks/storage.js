@@ -14,7 +14,7 @@ const GameData = {
         if (!player) return null;
         try {
             const safeName = formatName(player);
-            const ref = doc(db, "players", safeName);
+            const ref = doc(db, "connect_bubbles", safeName);
 
             await setDoc(
                 ref,
@@ -40,7 +40,7 @@ const GameData = {
         if (!player) return null;
         try {
             const safeName = formatName(player);
-            const ref = doc(db, "players", safeName);
+            const ref = doc(db, "connect_bubbles", safeName);
 
             await updateDoc(ref, {
                 score, // number
@@ -62,7 +62,7 @@ const GameData = {
 
         try {
             const safeName = formatName(player);
-            const ref = doc(db, "players", safeName);
+            const ref = doc(db, "connect_bubbles", safeName);
             const snap = await getDoc(ref);
 
             return snap.exists() ? snap.data() : null;

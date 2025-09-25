@@ -1,6 +1,7 @@
 import * as Phaser from "phaser";
 import { makeParticle } from "./objects";
 import { getColorHex, showMessage } from "./states";
+import { updateProgress } from "../../hooks/storage";
 
 const Effects = {
     triggerAirplane(scene) {
@@ -25,27 +26,21 @@ const Effects = {
                     scene.level++;
                     scene.scores.total += scene.scores.current;
 
+                    //Save data to DB
+                    if (scene.player) {
+                        await updateProgress(scene.player, {
+                            score: scene.scores.total,
+                            move: scene.moves.current,
+                            level: scene.level,
+                        });
+                    }
+
                     scene.scene.restart({
                         gameOver: false,
                         level: scene.level,
-                        remainingMoves: scene.moves.current,
-                        totalScore: scene.scores.total,
+                        move: scene.moves.current,
+                        score: scene.scores.total,
                     });
-
-                    //Save data to DB
-                    // if (scene.playerName) {
-                    //     await updateProgress(scene.playerName, {
-                    //         score: scene.scores.total,
-                    //         move: scene.moves.current,
-                    //         level: scene.level,
-                    //     });
-                    //     scene.scene.restart({
-                    //         gameOver: false,
-                    //         level: scene.level,
-                    //         remainingMoves: scene.moves.current,
-                    //         totalScore: scene.scores.total,
-                    //     });
-                    // }
                 });
             },
         });

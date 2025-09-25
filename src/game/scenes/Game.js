@@ -24,10 +24,10 @@ class GameEngine extends Phaser.Scene {
         this.rows = 9;
         this.cols = 8;
         this.level = 1;
-        this.targetScore = 0;
+        this.target = 0;
         this.scores = { current: 0, total: 0 };
         this.moves = { current: 0, total: 0 };
-        this.playerName = null;
+        this.player = null;
 
         // 🆕 Track last emitted values
         this._lastSent = {
@@ -38,16 +38,15 @@ class GameEngine extends Phaser.Scene {
         };
     }
 
-    init(data) {
-        this.resetGame(data);
+    init() {
+        emitEvent("current-scene-ready", this);
+        onEvent("firebase-data-loaded", (data) => this.resetGame(data));
 
         // clear old events
         if (this.input) this.input.removeAllListeners();
     }
 
     create() {
-        // 🔹 Lifecycle hook
-        emitEvent("current-scene-ready", this);
         onEvent("sound", (mute) => {
             this.sound.mute = mute;
             this.sound.play("close");
@@ -62,32 +61,32 @@ class GameEngine extends Phaser.Scene {
 
     resetGame(data = {}) {
         // Player
-        this.playerName = data.player;
+        this.player = data.player;
 
         // Core state
         this.level = data.level || 1;
         this.gameOver = data.gameOver || false;
 
         // 🔹 Always compute target first (once only)
-        this.targetScore = this.genBaseTarget();
+        this.target = this.genBaseTarget();
 
         // Moves (carry over remaining moves if given)
-        const baseMoves = this.genBaseMoves(this.targetScore);
+        const baseMoves = this.genBaseMoves(this.target);
         this.moves = {
-            current: (data.remainingMoves || 0) + baseMoves,
-            total: (data.remainingMoves || 0) + baseMoves,
+            current: (data.move || 0) + baseMoves,
+            total: (data.move || 0) + baseMoves,
         };
 
         // Scores
         this.scores = {
             current: 0,
-            total: data.totalScore || 0,
+            total: data.score || 0,
         };
     }
 
     genBaseTarget() {
         // 🔹 Early levels = gentler target, later = harder
-        const scale = this.level <= 3 ? 90 : 60;
+        const scale = this.level <= 4 ? 90 : 60;
 
         // Add random element + base scaling
         const base =
@@ -119,7 +118,7 @@ class GameEngine extends Phaser.Scene {
             events: ["level", "target", "moves", "scores"],
             args: [
                 this.level,
-                this.targetScore,
+                this.target,
                 { ...this.moves },
                 { ...this.scores },
             ],
