@@ -13,21 +13,31 @@ const GameEvent = {
             RemoteEvent.off(event, callbacks[idx]);
         });
     },
-    emitEvents({ events, args }) {
+    emitEvents({ events, args = [] }) {
         events.forEach((event, idx) => {
             RemoteEvent.emit(event, args[idx]);
         });
     },
-    emitEvent(event, arg) {
+    emitEvent(event, arg = null) {
         RemoteEvent.emit(event, arg);
     },
-    onEvent(event, callback) {
+    onEvent(event, callback = Function) {
         RemoteEvent.on(event, callback);
     },
-    offEvent(event, callback) {
+    offEvent(event, callback = Function) {
         RemoteEvent.off(event, callback);
+    },
+    oneEvent(event, callback = Function) {
+        RemoteEvent.once(event, callback);
     },
 };
 
-export const { onEvents, offEvents, emitEvents, emitEvent, onEvent, offEvent } =
-    GameEvent;
+export const {
+    onEvents,
+    offEvents,
+    emitEvents,
+    emitEvent,
+    onEvent,
+    offEvent,
+    oneEvent,
+} = GameEvent;

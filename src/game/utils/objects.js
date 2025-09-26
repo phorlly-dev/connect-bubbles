@@ -10,10 +10,10 @@ const Objects = {
     makeInput(scene) {
         // Mouse/touch down - start drawing
         scene.input.on("pointerdown", (_pointer, currentlyOver) => {
+            if (scene.gameOver || currentlyOver.length === 0) return;
+
             // Change cursor when drawing starts
             scene.input.setDefaultCursor("crosshair");
-
-            if (scene.gameOver || currentlyOver.length === 0) return;
 
             startConnection(scene, currentlyOver[0]);
         });
