@@ -36,6 +36,15 @@ class GameEngine extends Phaser.Scene {
             level: 0,
             target: 0,
         };
+
+        this.colorScores = {
+            red: 10,
+            blue: 15,
+            green: 20,
+            yellow: 25,
+            purple: 30,
+            orange: 40,
+        };
     }
 
     init() {
@@ -86,11 +95,10 @@ class GameEngine extends Phaser.Scene {
 
     genBaseTarget() {
         // 🔹 Early levels = gentler target, later = harder
-        const scale = this.level <= 4 ? 90 : 60;
+        const scale = this.level <= 6 ? 90 : 60;
 
         // Add random element + base scaling
-        const base =
-            (this.level - 1) * scale + Phaser.Math.Between(180, 360) + 120;
+        const base = (this.level - 1) * scale + Phaser.Math.Between(180, 360);
 
         return base;
     }

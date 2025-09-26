@@ -111,9 +111,20 @@ const Payloads = {
         scene.lineGraphics.clear();
     },
     clearConnectedBalls(scene) {
-        const points = scene.selectedBalls.length * 5;
+        let points = 0;
+
+        // Sum points based on each ball's color
+        scene.selectedBalls.forEach((ball) => {
+            const color = ball.getData("color"); // color must be stored on ball
+            const value = scene.colorScores[color] || 5; // fallback = 5
+            points += Math.floor(value / 5);
+        });
+
+        // Update score
         scene.scores.current += points;
         scene.safeEmit("scores", { ...scene.scores });
+
+        // Decrease moves
         scene.moves.current--;
         scene.safeEmit("moves", { ...scene.moves });
         scene.sound.play("connect");
