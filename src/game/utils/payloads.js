@@ -117,7 +117,7 @@ const Payloads = {
         scene.selectedBalls.forEach((ball) => {
             const color = ball.getData("color"); // color must be stored on ball
             const value = scene.colorScores[color] || 5; // fallback = 5
-            points += Math.floor(value / 5);
+            points += Math.floor(value / 4);
         });
 
         // Update score
