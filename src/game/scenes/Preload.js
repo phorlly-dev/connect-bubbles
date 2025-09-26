@@ -16,18 +16,13 @@ class Preload extends Phaser.Scene {
     }
 
     preload() {
-        this.load.setPath("assets/");
-        this.load.image("airplane", "images/airplane.png");
-
-        this.load.audio("close", "sounds/close.wav");
-        this.load.audio("click", "sounds/click.wav");
-        this.load.audio("cancel", "sounds/cancel.ogg");
-        this.load.audio("lose", "sounds/lose.wav");
-        this.load.audio("win", "sounds/win.ogg");
-        this.load.audio("connect", "sounds/connect.ogg");
-        this.load.audio("empty", "sounds/empty.ogg");
+        this.loadAssets();
 
         // Generate ball textures once here
+        this.generateBallColors();
+    }
+
+    generateBallColors() {
         this.ballColors.forEach((color) => {
             const graphics = this.add.graphics();
 
@@ -54,6 +49,19 @@ class Preload extends Phaser.Scene {
             grap.generateTexture(`particle_${color}`, 16, 16);
             grap.destroy();
         });
+    }
+
+    loadAssets() {
+        this.load.setPath("assets/");
+        this.load.image("airplane", "images/airplane.png");
+
+        this.load.audio("close", "sounds/close.wav");
+        this.load.audio("click", "sounds/click.wav");
+        this.load.audio("cancel", "sounds/cancel.ogg");
+        this.load.audio("lose", "sounds/lose.wav");
+        this.load.audio("win", "sounds/win.ogg");
+        this.load.audio("connect", "sounds/connect.ogg");
+        this.load.audio("empty", "sounds/empty.ogg");
     }
 
     create() {
