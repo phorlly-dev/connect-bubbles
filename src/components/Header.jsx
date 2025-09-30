@@ -88,7 +88,7 @@ const Header = ({ isTailwind }) => {
             </section>
         </header>
     ) : (
-        <header className="px-4 py-2 border-bottom bg-white bg-opacity-75">
+        <header className="px-2 py-1 card-header">
             {/* First Row */}
             <section className="d-flex align-items-center justify-content-between">
                 <span className="text-muted">

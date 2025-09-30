@@ -7,13 +7,22 @@ import Preload from "./scenes/Preload";
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const config = {
     type: Phaser.AUTO,
-    backgroundColor: "#030303ff",
-    scale: {
-        mode: Phaser.Scale.FIT, // auto scale to fit
-        autoCenter: Phaser.Scale.CENTER_BOTH, // center horizontally + vertically
-        width: width,
-        height: height,
+    // backgroundColor: "#030303ff",
+    width,
+    height,
+    physics: {
+        default: "arcade",
+        debug: false,
+        arcade: {
+            gravity: { y: 200 },
+        },
     },
+    // scale: {
+    //     mode: Phaser.Scale.FIT, // auto scale to fit
+    //     autoCenter: Phaser.Scale.CENTER_BOTH, // center horizontally + vertically
+    //     width: width,
+    //     height: height,
+    // },
     scene: [Preload, GameEngine],
 };
 

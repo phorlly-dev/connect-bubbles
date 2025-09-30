@@ -33,6 +33,7 @@ const Banner = ({ onClose, isTailwind }) => {
                                 <img
                                     src="/assets/images/banner.webp"
                                     alt="Promote Banner"
+                                    style={{ maxWidth: "360px" }}
                                     className="max-w-xs sm:max-w-md rounded-lg shadow cursor-pointer"
                                 />
                             </a>

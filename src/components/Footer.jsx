@@ -17,7 +17,7 @@ const Footer = ({ isTailwind }) => {
             </p>
         </footer>
     ) : (
-        <footer className="w-100 bg-white bg-opacity-90 text-center">
+        <footer className="w-100 card-footer text-center">
             <p className="small text-muted m-1">
                 Draw lines to connect{" "}
                 <span className="fw-semibold text-primary">3 or more</span>{" "}

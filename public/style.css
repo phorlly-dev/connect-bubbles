@@ -10,14 +10,14 @@ body {
     min-height: 100vh;
 }
 
-canvas {
+/* canvas {
     border: 3px solid #fff;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
+} */
 
 .btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .btn:active {

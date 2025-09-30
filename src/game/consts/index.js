@@ -1,7 +1,7 @@
 const Instances = {
     game: {
         width: 400,
-        height: 460,
+        height: 440,
         preload: "preload",
         engine: "engine",
     },

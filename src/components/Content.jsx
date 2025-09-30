@@ -46,7 +46,7 @@ const Content = ({ player, isTailwind, onLogout }) => {
                     </section>
                 </div>
             ) : (
-                <div className="w-100 d-flex flex-column align-items-center justify-content-center px-4">
+                <div className="d-flex flex-column px-4">
                     <section className="d-flex flex-row align-items-center justify-content-center text-light mb-2">
                         <h5 className="mb-0 h6">
                             Welcome{" "}
@@ -65,14 +65,14 @@ const Content = ({ player, isTailwind, onLogout }) => {
                         </button>
                     </section>
                     <section
-                        className="bg-white bg-opacity-90 w-auto rounded-4 shadow-lg p-1 mx-2"
+                        className="bg-white bg-opacity-90 w-auto rounded-4 shadow-lg p-1 mx-1"
                         style={{ maxWidth, width: "100%" }}
                     >
                         {/* HEADER */}
                         <Header isTailwind={false} />
 
                         {/* GAME BOARD */}
-                        <main className="d-flex align-items-center justify-content-center bg-dark p-1 p-sm-1">
+                        <main className="card-body d-flex align-items-center justify-content-center">
                             <PhaserGame ref={phaserRef} player={player} />
                         </main>
 
