@@ -26,7 +26,7 @@ const PhaserGame = React.forwardRef(({ player, props }, ref) => {
     // listen for scene ready event
     React.useEffect(() => {
         const handleSceneReady = async (scene) => {
-            if (ref && ref.current) {
+            if (ref && ref.current && player) {
                 ref.current.scene = scene;
                 if (player) {
                     const value = await loadData(player);

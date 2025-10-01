@@ -117,11 +117,6 @@ class GameEngine extends Phaser.Scene {
     }
 
     update() {
-        //Auto sync UI
-        this.syncUI();
-    }
-
-    syncUI() {
         emitEvents({
             events: ["level", "target", "moves", "scores"],
             args: [

@@ -16,10 +16,14 @@ class Preload extends Phaser.Scene {
     }
 
     preload() {
-        this.loadAssets();
+        try {
+            this.loadAssets();
 
-        // Generate ball textures once here
-        this.generateBallColors();
+            // Generate ball textures once here
+            this.generateBallColors();
+        } catch (error) {
+            console.error("The assets were not loaded correctly: ", error);
+        }
     }
 
     generateBallColors() {
